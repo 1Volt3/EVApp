@@ -43,10 +43,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         getMakes()
         self.currentPage = self.manufacturers
         self.currentSelection = self.make
+        backButton.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         configureView()
     }
     
-    
+    func buttonPressed (sender: AnyObject){
+        if (currentPage == years) {
+            carViewer.reloadData()
+            switchToModel()
+        } else if (currentPage == models) {
+            backButton.setTitle("", forState: .Normal)
+            getMakes()
+            switchToMake()
+            carViewer.reloadData()
+            
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -80,7 +92,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         backButton.setTitle("< Model", forState: .Normal)
         carViewer.reloadData()
     }
-    
+
     func getMakes() {
         
         // Setup the session to make REST GET call.  Notice the URL is https NOT http!!
@@ -224,7 +236,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             switchToYear()
         } else if (currentPage == years) {
             self.year = self.currentSelection
-            carTaskLabel.text = "" + self.make + " " + self.model + " " + self.year
+            carTaskLabel.text = "" + self.year + " " + self.make + " " + self.model
         }
     }
 
